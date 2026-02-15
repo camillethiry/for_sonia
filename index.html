@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine Surprise 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Pacifico&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+body {
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+    text-align: center;
+    font-family: 'Fredoka', sans-serif;
+    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #fcb69f);
+    background-size: 400% 400%;
+    animation: gradientMove 10s ease infinite;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+h1 {
+    margin-top: 120px;
+    font-size: 34px;
+    color: white;
+    text-shadow: 0 0 15px rgba(255,255,255,0.8);
+    z-index: 2;
+    position: relative;
+}
+
+button {
+    padding: 18px 35px;
+    font-size: 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    position: absolute;
+    transition: all 0.2s ease;
+    z-index: 3;
+}
+
+#yesBtn {
+    background: #ff4d6d;
+    color: white;
+    left: 43%;
+    top: 320px;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(255,77,109,0.8);
+    animation: heartbeat 1s infinite;
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    40% { transform: scale(1); }
+    60% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+#noBtn {
+    background: #555;
+    color: white;
+    left: 57%;
+    top: 320px;
+}
+
+#celebration {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 38px;
+    font-family: 'Pacifico', cursive;
+    color: white;
+    text-shadow: 0 0 25px rgba(255,255,255,1);
+    z-index: 5;
+    animation: fadeIn 1.2s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -60%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* Floating background hearts */
+
+.bg-heart {
+    position: fixed;
+    animation: floatUp linear forwards;
+    z-index: 1;
+    opacity: 0.7;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 0.8; }
+    100% { transform: translateY(-110vh); opacity: 0; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="questionContainer">
+    <h1>SONIA<br><br>Are you free from Friday 24th of July until Sunday 26th of July? 💌</h1>
+    <button id="yesBtn">Yes 💖</button>
+    <button id="noBtn">No 🙈</button>
+</div>
+
+<div id="celebration"></div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const celebration = document.getElementById("celebration");
+const questionContainer = document.getElementById("questionContainer");
+
+let scale = 1;
+
+/* Function to move and shrink NO button */
+function moveNoButton() {
+    scale -= 0.1;
+
+    if (scale <= 0.2) {
+        noBtn.style.display = "none";
+        return;
+    }
+
+    noBtn.style.transform = `scale(${scale})`;
+
+    const maxX = window.innerWidth - noBtn.offsetWidth;
+    const maxY = window.innerHeight - noBtn.offsetHeight;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+}
+
+/* Desktop hover */
+noBtn.addEventListener("mouseenter", moveNoButton);
+
+/* Mobile touch */
+noBtn.addEventListener("touchstart", function(e) {
+    e.preventDefault();
+    moveNoButton();
+});
+
+/* Background hearts */
+function createBackgroundHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("bg-heart");
+    heart.innerHTML = ["💖","💘","💕","💗"][Math.floor(Math.random()*4)];
+
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.bottom = "-20px";
+    heart.style.fontSize = (Math.random() * 25 + 15) + "px";
+
+    const duration = Math.random() * 5 + 5;
+    heart.style.animationDuration = duration + "s";
+
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), duration * 1000);
+}
+
+setInterval(createBackgroundHeart, 250);
+
+/* YES click */
+yesBtn.addEventListener("click", () => {
+
+    questionContainer.style.display = "none";
+
+    celebration.innerHTML = `
+        💖✨ Amazing! ✨💖<br><br>
+        Be ready, you won't regret this!<br><br>
+        Anne & Camille 💕
+    `;
+
+    celebration.style.display = "block";
+
+    for (let i = 0; i < 140; i++) {
+        const emoji = document.createElement("div");
+        emoji.style.position = "fixed";
+        emoji.innerHTML = ["💖","🎉","✨","💘","💕"][Math.floor(Math.random()*5)];
+
+        const startX = Math.random() * window.innerWidth;
+        const startY = Math.random() * window.innerHeight;
+
+        emoji.style.left = startX + "px";
+        emoji.style.top = startY + "px";
+        emoji.style.fontSize = (Math.random() * 35 + 20) + "px";
+
+        document.body.appendChild(emoji);
+
+        const moveX = (Math.random() - 0.5) * 800;
+        const moveY = (Math.random() - 0.5) * 800;
+
+        emoji.animate([
+            { transform: "translate(0,0)", opacity: 1 },
+            { transform: `translate(${moveX}px, ${moveY}px)`, opacity: 0 }
+        ], {
+            duration: 2200,
+            easing: "ease-out"
+        });
+
+        setTimeout(() => emoji.remove(), 2200);
+    }
+});
+</script>
+</body>
+</html>
